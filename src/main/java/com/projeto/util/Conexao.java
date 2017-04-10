@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -41,13 +41,13 @@ public final class Conexao {
 
 		if (con == null || con.isClosed()) {
 			try {
-				Properties properties = new Properties();
-				String driver = properties.getProperty("bd.drive");
+				ResourceBundle bundle 	= ResourceBundle.getBundle("env"); 
+				String driver = bundle.getString("env.edi.oracle.jdbc.driver");
 
-				String strCon = properties.getProperty("bd.url");
+				String strCon = bundle.getString("env.edi.oracle.url");
 
-				String user = properties.getProperty("bd.usuario");
-				String pass = properties.getProperty("bd.senha");
+				String user = bundle.getString("env.edi.oracle.username");
+				String pass = bundle.getString("env.edi.oracle.password");
 
 				Class.forName(driver);
 

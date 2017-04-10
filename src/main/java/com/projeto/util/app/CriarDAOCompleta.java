@@ -97,7 +97,7 @@ public class CriarDAOCompleta {
 		
 		//listaProcessar.add(new String[]{"MDFE_VIAGEM_CONTROLE", "ID_MDFE_VIAGEM_CONTROLE", "ATLAS", null});	
 		
-		listaProcessar.add(new String[]{"CTE_LOG_USUARIO", "CD_USUARIO", "ATLAS", null});	
+		listaProcessar.add(new String[]{"CONHECTO_PRE_EDI", "NR_CGC_REMETENTE", "ATLAS", null});	
 		
 		
 		System.out.println("");
@@ -113,7 +113,7 @@ public class CriarDAOCompleta {
 	
 	public void execute(String tabela, String id, String schema, String tipoId){
 		try{
-			
+			new File("./output/").mkdir();
 			limparOutPut("./output/factory/");
 			limparOutPut("./output/implementacao/");
 			limparOutPut("./output/interfaces/");
@@ -145,6 +145,10 @@ public class CriarDAOCompleta {
 	private void limparOutPut(String diretorio){
 		
 		File dir = new File(diretorio);
+		
+		if(!dir.exists()){
+			dir.mkdir();
+		}
 		
 		if(dir.isDirectory()){
 			File[] listFiles = dir.listFiles();
