@@ -37,8 +37,8 @@ public class CriarInterfaceDAO  {
     public void execute() throws  SQLException, IOException {
         /* IMPORTS */
         imports = new StringBuffer("" +
-        		"import br.com.commons.atlas.dao.exception.DAOException;\n" +
-        		"import br.com.commons.atlas.dao.vo." + trataNome(tabela, true) + ";");
+        		"import br.com.fl.dao.exception.DAOException;\n" +
+        		"import br.com.fl.dao.vo." + trataNome(tabela, true) + ";");
         
         /* Cria INSERT */
         insert = new StringBuffer("public abstract int insert(" + trataNome(tabela, true) + " vo) throws DAOException; \n");
@@ -54,7 +54,7 @@ public class CriarInterfaceDAO  {
 
         String nomeClasse = trataNome(tabela, true);
         FileWriter fw = new FileWriter(new File("./output/interfaces/" + nomeClasse + "Interface.java"));
-        fw.write("package br.com.commons.atlas.dao.interfaces;\n");
+        fw.write("package br.com.fl.dao.interfaces;\n");
         fw.write("\n" + imports.toString());
         fw.write("\n\npublic interface " + nomeClasse + "Interface {\n");
         fw.write("\n" + insert.toString());

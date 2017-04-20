@@ -97,7 +97,8 @@ public class CriarDAOCompleta {
 		
 		//listaProcessar.add(new String[]{"MDFE_VIAGEM_CONTROLE", "ID_MDFE_VIAGEM_CONTROLE", "ATLAS", null});	
 		
-		listaProcessar.add(new String[]{"CONHECTO_PRE_EDI", "NR_CGC_REMETENTE", "ATLAS", null});	
+		//listaProcessar.add(new String[]{"CONHECTO_PRE_EDI", "NR_CGC_REMETENTE", "ATLAS", null});
+		listaProcessar.add(new String[]{"nota_pre_edi".toUpperCase(), "NR_CGC_REMETENTE", "ATLAS", null});	
 		
 		
 		System.out.println("");

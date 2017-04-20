@@ -39,8 +39,8 @@ public class CriarFactory {
     	imports = new StringBuffer(
     			"import java.util.HashMap;\n "+
     			"import java.util.Map;\n" +
-        		"import br.com.commons.atlas.dao.implementacao." + nomeTabela + "DAO;\n" +
-        		"import br.com.commons.atlas.dao.interfaces." + nomeTabela + "Interface;\n");
+        		"import br.com.fl.dao.implementacao." + nomeTabela + "DAO;\n" +
+        		"import br.com.fl.dao.interfaces." + nomeTabela + "Interface;\n");
         
         StringBuffer body = new StringBuffer(
         		"private static " + nomeTabela + "Factory instance; \n" +
@@ -64,7 +64,7 @@ public class CriarFactory {
         		"} \n");
 
         FileWriter fw = new FileWriter(new File("./output/factory/" + nomeTabela + "Factory.java"));
-        fw.write("package br.com.commons.atlas.dao.factory;\n");
+        fw.write("package br.com.fl.dao.factory;\n");
         fw.write("\n" + imports.toString());
         fw.write("\n\npublic class " + nomeTabela + "Factory {\n");
         fw.write("\n" + body.toString());

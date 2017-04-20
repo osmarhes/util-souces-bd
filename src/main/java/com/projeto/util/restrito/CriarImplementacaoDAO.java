@@ -83,11 +83,11 @@ public class CriarImplementacaoDAO {
         		"import java.sql.ResultSet;\n" +
         		"import java.sql.SQLException;\n" +
         		"import java.sql.Types;\n" +        		
-        		"import br.com.commons.atlas.util.BasicRowProcessor;\n" +
-        		"import br.com.commons.atlas.gen.dao.Conexao;\n" +
-        		"import br.com.commons.atlas.dao.exception.DAOException;\n" +
-        		"import br.com.commons.atlas.dao.vo." + trataNome(tabela, true) + ";\n" + 
-        		"import br.com.commons.atlas.dao.interfaces." + trataNome(tabela, true) + "Interface;\n");
+        		"import br.com.fl.util.BasicRowProcessor;\n" +
+        		"import br.com.fl.gen.dao.Conexao;\n" +
+        		"import br.com.fl.dao.exception.DAOException;\n" +
+        		"import br.com.fl.dao.vo." + trataNome(tabela, true) + ";\n" + 
+        		"import br.com.fl.dao.interfaces." + trataNome(tabela, true) + "Interface;\n");
         
         /* Cria INSERT */
         insert = new StringBuffer();
@@ -96,23 +96,24 @@ public class CriarImplementacaoDAO {
         insertSqlStatements = new StringBuffer();
 
         for (int i = 1; i <= numeroColunas; i++) {
+        	int tipoColuna = rsmd.getColumnType(i);
         	if (i==numeroColunas){
             	insertSqlColumns.append(rsmd.getColumnLabel(i) + "");
-            	if ((rsmd.getColumnType(i)==Types.DATE)){
+            	if ((rsmd.getColumnType(i)==Types.DATE || tipoColuna == Types.TIMESTAMP)){
             		insertSqlValues.append("to_date(?, 'dd-mm-yyyy hh24:mi:ss')");
             	}else{
                 	insertSqlValues.append("?");            		
             	}
         	}else{
             	insertSqlColumns.append(rsmd.getColumnLabel(i) + ", ");
-            	if ((rsmd.getColumnType(i)==Types.DATE)){
+            	if ((rsmd.getColumnType(i)==Types.DATE || tipoColuna == Types.TIMESTAMP)){
             		insertSqlValues.append("to_date(?, 'dd-mm-yyyy hh24:mi:ss'), ");
             	}else{
                 	insertSqlValues.append("?, ");
             	}        		
         	}
-        	insertSqlStatements.append("stmt.setObject(idx++, " + (rsmd.getColumnType(i)==Types.DATE ? "sdf.format(" : "") + 
-        			"vo.get" + trataNome(rsmd.getColumnLabel(i), true) + "()" + (rsmd.getColumnType(i)==Types.DATE ? ")" : "") + 
+        	insertSqlStatements.append("stmt.setObject(idx++, " + ((rsmd.getColumnType(i)==Types.DATE || tipoColuna == Types.TIMESTAMP) ? "sdf.format(" : "") + 
+        			"vo.get" + trataNome(rsmd.getColumnLabel(i), true) + "()" + ((rsmd.getColumnType(i)==Types.DATE || tipoColuna == Types.TIMESTAMP) ? ")" : "") + 
         			", " + trataRetorno(rsmd.getColumnType(i)) + ");\n");
         }
         
@@ -147,13 +148,13 @@ public class CriarImplementacaoDAO {
         for (int i = 1; i <= numeroColunas; i++) {
         	if (!rsmd.getColumnLabel(i).equals(id)){
             	if (i==numeroColunas){
-                	if ((rsmd.getColumnType(i)==Types.DATE)){
+                	if ((rsmd.getColumnType(i)==Types.DATE || rsmd.getColumnType(i) == Types.TIMESTAMP)){
                 		updateSqlColumns.append(rsmd.getColumnLabel(i) + "=to_date(?, 'dd-mm-yyyy hh24:mi:ss')");
                 	}else{
                 		updateSqlColumns.append(rsmd.getColumnLabel(i) + "=?");                		
                 	}
             	}else{
-                	if ((rsmd.getColumnType(i)==Types.DATE)){
+                	if ((rsmd.getColumnType(i)==Types.DATE || rsmd.getColumnType(i) == Types.TIMESTAMP)){
                 		updateSqlColumns.append(rsmd.getColumnLabel(i) + "=to_date(?, 'dd-mm-yyyy hh24:mi:ss'), ");
                 	}else{
                 		updateSqlColumns.append(rsmd.getColumnLabel(i) + "=?, ");                		
@@ -229,7 +230,7 @@ public class CriarImplementacaoDAO {
 
         String nomeClasse = trataNome(tabela, true);
         FileWriter fw = new FileWriter(new File("./output/implementacao/" + nomeClasse + "DAO.java"));
-        fw.write("package br.com.commons.atlas.dao.implementacao;\n");
+        fw.write("package br.com.fl.dao.implementacao;\n");
         fw.write("\n" + imports.toString());
         fw.write("\n\npublic class " + nomeClasse + "DAO implements " + nomeClasse + "Interface {\n");
         fw.write("\n" + simpledate.toString());
@@ -272,6 +273,9 @@ public class CriarImplementacaoDAO {
 	    	case Types.CHAR:
 	    		return "Types.VARCHAR";
 	    	case Types.DATE:
+	    		simpledate = new StringBuffer("SimpleDateFormat sdf = new SimpleDateFormat(\"dd-MM-yyyy HH:mm:ss\");");
+	    		return "Types.VARCHAR";
+	    	case Types.TIMESTAMP:
 	    		simpledate = new StringBuffer("SimpleDateFormat sdf = new SimpleDateFormat(\"dd-MM-yyyy HH:mm:ss\");");
 	    		return "Types.VARCHAR";
 	    	default:

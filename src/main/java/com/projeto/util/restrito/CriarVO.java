@@ -83,7 +83,7 @@ public class CriarVO  {
 
         String nomeClasse = trataNome(tabela, true);
         FileWriter fw = new FileWriter(new File("./output/vo/" + nomeClasse + ".java"));
-        fw.write("package br.com.commons.atlas.dao.vo;");
+        fw.write("package br.com.fl.dao.vo;");
         fw.write(importsStr);
         fw.write("\n\npublic class " + nomeClasse + "{");
         fw.write("\n" + variaveis.toString());
@@ -102,8 +102,8 @@ public class CriarVO  {
             tipoRetorno = "Double";
         } else if ((tipoColuna == Types.INTEGER) || (tipoColuna == Types.NUMERIC)) {
             tipoRetorno = "Long";
-        } else if (tipoColuna == Types.DATE) {
-            tipoRetorno = "Date";
+        } else if (tipoColuna == Types.DATE || tipoColuna == Types.TIMESTAMP) {
+            tipoRetorno = "Calendar";
             imports.add("import java.util.Calendar;");
         } else {
             tipoRetorno = "Object";
